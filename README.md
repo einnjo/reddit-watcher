@@ -32,4 +32,4 @@ const watcher = new CommentWatcher({ reddit, filter, action });
 watcher.start();
 ```
 
-![demo](https://gfycat.com/cheerfulpaltryaustralianfreshwatercrocodile)
+![](demo.gif)
