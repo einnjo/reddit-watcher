@@ -1,0 +1,30 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-plugin-prettier"],
+  "rules": {
+    "forin": false,
+    "interface-name": false,
+    "max-classes-per-file": [true, 2],
+    "member-access": false,
+    "no-console": true,
+    "no-redundant-jsdoc": true,
+    "no-shadowed-variable": [
+      true,
+      {
+        "temporalDeadZone": false
+      }
+    ],
+    "object-literal-sort-keys": false,
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "case-insensitive",
+        "grouped-imports": true
+      }
+    ],
+    "prettier": true,
+    "quotemark": [true, "single"],
+    "typedef": [true, "parameter", "property-declaration", "member-variable-declaration"],
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
+  }
+}
