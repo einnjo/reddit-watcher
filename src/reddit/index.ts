@@ -29,8 +29,12 @@ export class Reddit {
   constructor(options: RedditOptions) {
     this.user = options.user || (process.env.REDDIT_USER as string);
     this.secret = options.secret || (process.env.REDDIT_SECRET as string);
-    this.apiBaseUrl = options.apiBaseUrl || DEFAULT_API_BASE_URL;
-    this.authApiBaseUrl = options.authApiBaseUrl || DEFAULT_AUTH_API_BASE_URL;
+    this.apiBaseUrl =
+      options.apiBaseUrl || (process.env.REDDIT_API_BASE_URL as string) || DEFAULT_API_BASE_URL;
+    this.authApiBaseUrl =
+      options.authApiBaseUrl ||
+      (process.env.REDDIT_AUTH_API_BASE_URL as string) ||
+      DEFAULT_AUTH_API_BASE_URL;
     this.userAgent = options.userAgent || (process.env.REDDIT_USER_AGENT as string);
     this.http = Axios.default.create({
       baseURL: this.apiBaseUrl,

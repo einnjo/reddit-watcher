@@ -5,8 +5,7 @@ Allows you to watch 👀, filter 🕵, and act 🚀 on new reddit comments.
 ## Usage
 
 ```typescript
-import { CommentWatcher } from '.';
-import { Comment, Reddit } from './reddit';
+import { Comment, CommentWatcher, Reddit } from 'reddit-watcher';
 
 // Initialize the reddit API client.
 const reddit = new Reddit({
