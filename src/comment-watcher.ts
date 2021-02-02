@@ -1,28 +1,30 @@
+import EventEmitter from 'events';
+
 import { Reddit } from './reddit';
 import { Comment } from './reddit/comment';
 
 type Filter = (comment: Comment) => boolean;
-type Action = (comments: Comment[]) => Promise<void>;
 
-export class CommentWatcher {
+export class CommentWatcher extends EventEmitter {
+  public static COMMENTS_EVENT = 'COMMENTS';
+
   private reddit: Reddit;
   private filter: Filter;
-  private action: Action;
   private running: boolean = false;
 
-  constructor(options: { reddit: Reddit; filter: Filter; action: Action }) {
+  constructor(options: { reddit: Reddit; filter: Filter }) {
+    super();
     this.reddit = options.reddit;
     this.filter = options.filter;
-    this.action = options.action;
   }
 
   async start() {
     this.running = true;
-    do {
+    while (this.running) {
       const comments = await this.reddit.getComments();
       const matchingComments = comments.filter(this.filter);
-      await this.action(matchingComments);
-    } while (this.running);
+      this.emit(CommentWatcher.COMMENTS_EVENT, matchingComments);
+    }
   }
 
   stop() {
