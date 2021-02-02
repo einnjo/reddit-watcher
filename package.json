@@ -1,7 +1,24 @@
 {
   "name": "reddit-watcher",
   "version": "0.1.0",
+  "description": "Allows you to watch 👀, filter 🕵, and act 🚀 on new reddit comments.",
+  "keywords": [
+    "reddit",
+    "comments",
+    "promise",
+    "node",
+    "typescript"
+  ],
+  "homepage": "https://github.com/einnjo/reddit-watcher",
+  "bugs": {
+    "url": "https://github.com/einnjo/reddit-watcher/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/einnjo/reddit-watcher.git"
+  },
   "license": "MIT",
+  "author": "einnjo",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
