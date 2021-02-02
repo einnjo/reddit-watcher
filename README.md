@@ -5,7 +5,7 @@ Allows you to watch 👀, filter 🕵, and act 🚀 on new reddit comments.
 ## Usage
 
 ```typescript
-import { Comment, CommentWatcher, Reddit } from 'reddit-watcher';
+import { CommentWatcher, Reddit, Comment } from './index';
 
 // Initialize the reddit API client.
 const reddit = new Reddit({
@@ -14,18 +14,20 @@ const reddit = new Reddit({
   userAgent: 'your_app_name (by /u/your_reddit_username)',
 });
 
-// Filter for comments posted in /r/movies threads.
-const filter = (comment: Comment) => comment.subreddit === 'movies';
+// Create a new watcher.
+const watcher = new CommentWatcher({
+  reddit,
+  // Optional subreddit, default is "all"
+  subreddit: 'movies',
+  // Optional filter for comments
+  filter: (comment: Comment) => comment.nsfw === false,
+});
 
-// Log all matched comments to console.
-const action = async (comments: Comment[]) => {
+watcher.on(CommentWatcher.COMMENTS_EVENT, (comments: Comment[]) => {
   for (const comment of comments) {
     console.log(`[${comment.subreddit}] ${comment.author} - ${comment.body}`);
   }
-};
-
-// Create a new watcher.
-const watcher = new CommentWatcher({ reddit, filter, action });
+});
 
 // Watch him as he goes.
 watcher.start();
