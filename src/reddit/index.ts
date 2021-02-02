@@ -10,11 +10,11 @@ const DEFAULT_API_BASE_URL = 'https://oauth.reddit.com';
 const AUTH_ENDPOINT = '/access_token';
 
 interface RedditOptions {
-  user?: string;
-  secret?: string;
+  user: string;
+  secret: string;
+  userAgent: string;
   apiBaseUrl?: string;
   authApiBaseUrl?: string;
-  userAgent?: string;
 }
 
 export class Reddit {
@@ -26,15 +26,12 @@ export class Reddit {
   private http: Axios.AxiosInstance;
 
   constructor(options: RedditOptions) {
-    this.user = options.user || (process.env.REDDIT_USER as string);
-    this.secret = options.secret || (process.env.REDDIT_SECRET as string);
-    this.apiBaseUrl =
-      options.apiBaseUrl || (process.env.REDDIT_API_BASE_URL as string) || DEFAULT_API_BASE_URL;
-    this.authApiBaseUrl =
-      options.authApiBaseUrl ||
-      (process.env.REDDIT_AUTH_API_BASE_URL as string) ||
-      DEFAULT_AUTH_API_BASE_URL;
-    this.userAgent = options.userAgent || (process.env.REDDIT_USER_AGENT as string);
+    this.user = options.user;
+    this.secret = options.secret;
+    this.userAgent = options.userAgent;
+    this.apiBaseUrl = options.apiBaseUrl || DEFAULT_API_BASE_URL;
+    this.authApiBaseUrl = options.authApiBaseUrl || DEFAULT_AUTH_API_BASE_URL;
+
     this.http = Axios.default.create({
       baseURL: this.apiBaseUrl,
       headers: {
