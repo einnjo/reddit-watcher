@@ -7,7 +7,6 @@ import { intercept500AndRetry } from './intercept-500-and-retry';
 
 const DEFAULT_AUTH_API_BASE_URL = 'https://www.reddit.com/api/v1';
 const DEFAULT_API_BASE_URL = 'https://oauth.reddit.com';
-const COMMENTS_ENDPOINT = '/r/all/comments';
 const AUTH_ENDPOINT = '/access_token';
 
 interface RedditOptions {
@@ -46,8 +45,8 @@ export class Reddit {
     intercept500AndRetry(this.http);
   }
 
-  public async getComments(): Promise<Comment[]> {
-    const response = await this.http.get(COMMENTS_ENDPOINT, {
+  public async getComments(options: { subreddit: string }): Promise<Comment[]> {
+    const response = await this.http.get(`/r/${options.subreddit}/comments`, {
       headers: {
         Accept: 'application/json',
       },
