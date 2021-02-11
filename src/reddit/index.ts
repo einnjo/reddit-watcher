@@ -42,13 +42,14 @@ export class Reddit {
     intercept500AndRetry(this.http);
   }
 
-  public async getComments(options: { subreddit: string }): Promise<Comment[]> {
+  public async getComments(options: { subreddit: string; before?: string }): Promise<Comment[]> {
     const response = await this.http.get(`/r/${options.subreddit}/comments`, {
       headers: {
         Accept: 'application/json',
       },
       params: {
         limit: 100,
+        before: options.before,
       },
     });
 

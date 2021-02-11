@@ -24,10 +24,30 @@ const reddit = new Reddit({
 // Create a new watcher.
 const watcher = new CommentWatcher({
   reddit,
+
   // Optional subreddit, default is "all"
   subreddit: 'movies',
+
   // Optional filter for comments
   filter: (comment: Comment) => comment.nsfw === false,
+
+  // Optional, default is false.
+  // Uses pagination to only request new comments
+  //
+  // Without it you can get many duplicate comments between calls
+  // in less active subreddits.
+  //
+  // In more active subreddits it's recommended to disable it,
+  // otherwise the watcher will lag behind quickly.
+  usePagination: true,
+
+  // Optional, default is 0.
+  // Limits how frequently Reddit's API will be called.
+  //
+  // On less active subreddits, with a minTimeBetweenRequests of 0
+  // you'll be performing too many requests and getting few new comments
+  // in return.
+  minTimeBetweenRequests: 1000 * 60,
 });
 
 watcher.on(Event.COMMENTS, (comments: Comment[]) => {
