@@ -1,12 +1,18 @@
-import EventEmitter from 'events';
-
+import { createNanoEvents, Emitter } from 'nanoevents';
 import { Reddit } from './reddit';
 import { Comment } from './reddit/comment';
 
 type Filter = (comment: Comment) => boolean;
 
-export class CommentWatcher extends EventEmitter {
-  public static COMMENTS_EVENT = 'COMMENTS';
+export enum Event {
+  COMMENTS = 'COMMENTS',
+}
+
+export interface Events {
+  [Event.COMMENTS]: (comments: Comment[]) => void;
+}
+
+export class CommentWatcher {
   public static DEFAULT_SUBREDDIT = 'all';
 
   private reddit: Reddit;
@@ -14,8 +20,7 @@ export class CommentWatcher extends EventEmitter {
   private subreddit: string;
   private running: boolean = false;
 
-  constructor(options: { reddit: Reddit; subreddit: string; filter?: Filter }) {
-    super();
+  private emitter: Emitter = createNanoEvents<Events>();
     this.reddit = options.reddit;
     this.subreddit = options.subreddit || CommentWatcher.DEFAULT_SUBREDDIT;
     this.filter = options.filter;
@@ -30,12 +35,16 @@ export class CommentWatcher extends EventEmitter {
       }
 
       if (comments.length > 0) {
-        this.emit(CommentWatcher.COMMENTS_EVENT, comments);
+        this.emitter.emit(Event.COMMENTS, comments);
       }
     }
   }
 
   stop() {
     this.running = false;
+  }
+
+  on<E extends keyof Events>(event: E, callback: Events[E]) {
+    return this.emitter.on(event, callback);
   }
 }

@@ -2,10 +2,17 @@
 
 Allows you to watch 👀, filter 🕵, and act 🚀 on new reddit comments.
 
+- Uses [nanoevents](https://github.com/ai/nanoevents) for emitting events.
+- Supports re-auth on token expiration and backoff on rate limits.
+
 ## Usage
 
+```
+npm install reddit-watcher
+```
+
 ```typescript
-import { CommentWatcher, Reddit, Comment } from './index';
+import { CommentWatcher, Reddit, Comment, Event } from 'reddit-watcher';
 
 // Initialize the reddit API client.
 const reddit = new Reddit({
@@ -23,7 +30,7 @@ const watcher = new CommentWatcher({
   filter: (comment: Comment) => comment.nsfw === false,
 });
 
-watcher.on(CommentWatcher.COMMENTS_EVENT, (comments: Comment[]) => {
+watcher.on(Event.COMMENTS, (comments: Comment[]) => {
   for (const comment of comments) {
     console.log(`[${comment.subreddit}] ${comment.author} - ${comment.body}`);
   }
